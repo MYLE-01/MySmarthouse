@@ -1,0 +1,81 @@
+#=======================================================================
+# no one in bed
+#=======================================================================
+- id: 'hold Master light off off'
+  alias: hold Master light off off
+  initial_state: true
+  trigger:
+  - entity_id: sensor.master_light
+    platform: state
+    to: 'HOLD'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.in_bed_his_side
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.in_bed_her_side
+        state: 'off'
+  action:
+  - data:
+      entity_id: light.her_side , light.his_side , light.master_bedroom 
+    service: light.toggle
+  - data:
+      entity_id: input_boolean.going_to_bed
+    service: input_boolean.turn_on
+
+#=======================================================================
+# hes in bed only
+#=======================================================================
+- id: 'hold Master light on off'
+  alias: hold Master light on off
+  initial_state: true
+  trigger:
+  - entity_id: sensor.master_light
+    platform: state
+    to: 'HOLD'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.in_bed_his_side
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.in_bed_her_side
+        state: 'off'
+  action:
+  - data:
+      entity_id: light.her_side 
+    service: light.toggle
+  - data:
+      entity_id: input_boolean.going_to_bed
+    service: input_boolean.turn_on
+
+#=======================================================================
+# her only in bed
+#=======================================================================
+- id: 'hold Master light off on'
+  alias: hold Master light off on
+  initial_state: true
+  trigger:
+  - entity_id: sensor.master_light
+    platform: state
+    to: 'HOLD'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.in_bed_his_side
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.in_bed_her_side
+        state: 'on'
+  action:
+  - data:
+      entity_id: light.his_side
+    service: light.toggle
+  - data:
+      entity_id: input_boolean.going_to_bed
+    service: input_boolean.turn_on
+
